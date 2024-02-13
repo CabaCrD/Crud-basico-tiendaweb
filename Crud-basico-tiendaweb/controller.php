@@ -110,6 +110,17 @@ class controller{
             die("Ha surgido un error al comprobar el stock del producto \n Error: " . $e->getMessage());
         }
     }
+    public static function getBuscador($busqueda){
+        try{
+            $conex= self :: getConnection();
+            $productos = $conex -> query("SELECT producto.* FROM producto, familia WHERE (producto.nombre_corto LIKE '%$busqueda%') OR ((producto.descripcion LIKE '%$busqueda%')) GROUP BY producto.nombre_corto");//CONSULTA QUE HAREMOS
+            $productos ->execute();//EJECUTAMOS CONSULTA
+            $resultado = $productos->fetchAll();//EXTRAEMOS TODAS LAS FAMILIAS
+            return $resultado;//SE DEVUELVE EL RESULTADO
+        }catch(PDOException $e){
+            die("Ha surgido un error al buscar los productos en la base de datos \n Error: " . $e->getMessage());
+        }
+    }
 }
 
  ?>
